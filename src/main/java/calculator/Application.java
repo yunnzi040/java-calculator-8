@@ -13,8 +13,26 @@ public class Application {
         // null 또는 빈 문자열("") 입력 시 0 반환
         if (input.isBlank()) {
             System.out.println("0");
-        } else {
-            System.out.println(input);
         }
+
+        if (input.startsWith("//")) {
+            // 커스텀 구분자
+            System.out.println("결과 : " + custom(input));
+        } else {
+            // 기본 구분자
+        }
+    }
+
+    public static int custom(String input) {
+        String seperator = input.substring(2, input.indexOf("\\n"));
+        String numbers = input.substring(input.indexOf("\\n") + 2);
+        String[] numbersArray = numbers.split(seperator);
+        int sum = 0;
+
+        for (String number : numbersArray) {
+            int numberInt = Integer.parseInt(number);
+            sum += numberInt;
+        }
+        return sum;
     }
 }
