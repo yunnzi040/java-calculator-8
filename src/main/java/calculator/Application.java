@@ -20,6 +20,7 @@ public class Application {
             System.out.println("결과 : " + custom(input));
         } else {
             // 기본 구분자
+            System.out.println("결과 : " + basic(input));
         }
     }
 
@@ -27,6 +28,17 @@ public class Application {
         String seperator = input.substring(2, input.indexOf("\\n"));
         String numbers = input.substring(input.indexOf("\\n") + 2);
         String[] numbersArray = numbers.split(seperator);
+        int sum = 0;
+
+        for (String number : numbersArray) {
+            int numberInt = Integer.parseInt(number);
+            sum += numberInt;
+        }
+        return sum;
+    }
+
+    public static int basic(String input) {
+        String[] numbersArray = input.split("[,:]+");
         int sum = 0;
 
         for (String number : numbersArray) {
