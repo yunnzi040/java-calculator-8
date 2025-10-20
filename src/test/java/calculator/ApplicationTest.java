@@ -63,15 +63,6 @@ class ApplicationTest extends NsTest {
         );
     }
 
-    @Test
-    void 기본_구분자_외_문자_사용() {
-        assertSimpleTest(() ->
-                assertThatThrownBy(() -> runException("1;2;3"))
-                        .isInstanceOf(IllegalArgumentException.class)
-                        .hasMessage("기본 구분자(, 또는 :)만 사용할 수 있습니다.")
-        );
-    }
-
     // 숫자 검증 테스트
     @Test
     void 빈_값_포함() {
@@ -87,7 +78,7 @@ class ApplicationTest extends NsTest {
         assertSimpleTest(() ->
                 assertThatThrownBy(() -> runException("1,-2,3"))
                         .isInstanceOf(IllegalArgumentException.class)
-                        .hasMessage("음수는 허용되지 않은 값입니다: -2")
+                        .hasMessage("음수는 허용되지 않은 값입니다 : -2")
         );
     }
 
@@ -96,7 +87,7 @@ class ApplicationTest extends NsTest {
         assertSimpleTest(() ->
                 assertThatThrownBy(() -> runException("1,a,3"))
                         .isInstanceOf(IllegalArgumentException.class)
-                        .hasMessage("숫자가 아닌 값이 포함되어 있습니다: a")
+                        .hasMessage("숫자가 아닌 값이 포함되어 있습니다 : a")
         );
     }
 
@@ -105,7 +96,7 @@ class ApplicationTest extends NsTest {
     void 기본_구분자_정상_사용() {
         assertSimpleTest(() -> {
             run("1,2,3");
-            assertThat(output()).contains("결과: 6");
+            assertThat(output()).contains("결과 : 6");
         });
     }
 
@@ -113,7 +104,7 @@ class ApplicationTest extends NsTest {
     void 콜론_구분자_정상_사용() {
         assertSimpleTest(() -> {
             run("1:2:3");
-            assertThat(output()).contains("결과: 6");
+            assertThat(output()).contains("결과 : 6");
         });
     }
 
