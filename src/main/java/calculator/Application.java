@@ -2,6 +2,7 @@ package calculator;
 
 import camp.nextstep.edu.missionutils.Console;
 import java.util.NoSuchElementException;
+import java.math.BigInteger;
 
 public class Application {
     public static void main(String[] args) {
@@ -12,7 +13,7 @@ public class Application {
             // 사용자로부터 문자열 입력 받기 (입력 문자열 앞뒤 공백 제거)
             String input = Console.readLine().trim();
 
-            int result = calculate(input);
+            BigInteger result = calculate(input);
 
             System.out.println("결과 : " + result);
 
@@ -29,10 +30,10 @@ public class Application {
     }
 
     // 전체 흐름
-    public static int calculate(String input) {
+    public static BigInteger calculate(String input) {
         // input이 null이거나 빈 문자열일 경우
         if (input == null || input.isEmpty()) {
-            return 0;
+            return BigInteger.ZERO;
         }
         // 구분자 추출
         String separator = extractSeparator(input);
@@ -48,11 +49,11 @@ public class Application {
     private static String extractSeparator(String input) {
         if (input.startsWith("//")) { // 커스텀 구분자
             int startIndex = input.indexOf("\\n");
-            if (startIndex == -1) { //
+            if (startIndex == -1) { // "\n"이 없을 경우
                 throw new IllegalArgumentException("커스텀 구분자 형식이 올바르지 않습니다.");
             }
             String separator = input.substring(2, startIndex);
-            if (separator.isEmpty()) {
+            if (separator.isEmpty()) { // 구분자가 비어있을 경우
                 throw new IllegalArgumentException("구분자는 비어있을 수 없습니다.");
             }
             return input.substring(2, startIndex);
@@ -64,9 +65,6 @@ public class Application {
     // 숫자 분리 로직
     private static String[] splitNumbers(String input, String separator) {
         if (separator.equals("[,:]")) { // 기본 구분자
-//            if (!input.matches(".*[^\\d\\s,:\\-A-Za-z].*")) {
-//                throw new IllegalArgumentException("기본 구분자(, 또는 :)만 사용할 수 있습니다.");
-//            }
             return input.split(separator);
         } else {
             int startIndex = input.indexOf("\\n");
@@ -80,19 +78,19 @@ public class Application {
     }
 
     // 합계 계산 및 검증
-    private static int sumNumbers(String[] numbers) {
-        int sum = 0;
+    private static BigInteger sumNumbers(String[] numbers) {
+        BigInteger sum = BigInteger.ZERO;
         for (String number : numbers) {
-            if (number.isBlank()) {
+            if (number.isBlank()) { // 구분한 값이 비어있을 경우
                 throw new IllegalArgumentException("빈 값은 허용되지 않습니다.");
             }
             try {
-                int numberInt = Integer.parseInt(number.trim());
-                if (numberInt < 0) {
-                    throw new IllegalArgumentException("음수는 허용되지 않은 값입니다 : " + numberInt);
+                BigInteger value = new BigInteger(number.trim());
+                if (value.signum() < 0) { // 구분한 값이 음수일 경우
+                    throw new IllegalArgumentException("음수는 허용되지 않은 값입니다 : " + value);
                 }
-                sum += numberInt;
-            } catch (NumberFormatException e) {
+                sum = sum.add(value);
+            } catch (NumberFormatException e) { // 숫자가 아닌 값이 포함되어 있을 경우
                 throw new IllegalArgumentException("숫자가 아닌 값이 포함되어 있습니다 : " + number.trim());
             }
         }
