@@ -1,8 +1,8 @@
 package calculator;
 
 import camp.nextstep.edu.missionutils.Console;
-import java.util.NoSuchElementException;
 import java.math.BigInteger;
+import java.util.NoSuchElementException;
 
 public class Application {
     public static void main(String[] args) {
@@ -56,7 +56,7 @@ public class Application {
             if (separator.isEmpty()) { // 구분자가 비어있을 경우
                 throw new IllegalArgumentException("구분자는 비어있을 수 없습니다.");
             }
-            return input.substring(2, startIndex);
+            return separator;
         } else { // 기본 구분자
             return "[,:]";
         }
@@ -70,7 +70,8 @@ public class Application {
             int startIndex = input.indexOf("\\n");
             String numbers = input.substring(startIndex + 2);
 
-            if (numbers.contains(",") || numbers.contains(":")) { // 커스텀 구분자와 기본 구분자 혼용 검증
+            if (!separator.equals("[,:]") && (numbers.contains(",") || numbers.contains(
+                    ":"))) { // 커스텀 구분자와 기본 구분자 혼용 검증
                 throw new IllegalArgumentException("커스텀 구분자와 기본 구분자를 혼용할 수 없습니다.");
             }
             return numbers.split(separator);
